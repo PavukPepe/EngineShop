@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+    <h2>Корзина</h2>
+    {% if cart_items %}
+        <ul class="cart-list">
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    <div>
+                        <h3>{{ item.engine.model }} ({{ item.engine.supplier }})</h3>
+                        <p>Цена за единицу: {{ item.engine.inventory.first.price }} руб.</p>
+                        <p>Количество: {{ item.quantity }} шт.</p>
+                        <p>Итого: {{ item.engine.inventory.first.price|floatformat:2 }} руб.</p>
+                        <form action="{% url 'shop:update_cart' %}" method="post" class="update-cart">
+                            {% csrf_token %}
+                            <input type="hidden" name="engine_id" value="{{ item.engine.id }}">
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="quantity-input">
+                            <button type="submit">Обновить</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="total-price">Общая сумма: {{ total_price|floatformat:2 }} руб.</p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'shop:order_create' %}" method="post" class="order-form">
+                {% csrf_token %}
+                <label for="address">Адрес доставки:</label>
+                <textarea id="address" name="address" required class="address-textarea"></textarea>
+                <button type="submit">Оформить заказ</button>
+            </form>
+        {% else %}
+            <p>Чтобы оформить заказ, <a href="{% url 'shop:login' %}?next={% url 'shop:order_create' %}">войдите</a> или <a href="{% url 'shop:register' %}">зарегистрируйтесь</a>.</p>
+        {% endif %}
+    {% else %}
+        <p>Корзина пуста.</p>
+    {% endif %}
+{% endblock %}

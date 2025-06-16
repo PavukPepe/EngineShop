@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Каталог двигателей{% endblock %}
+{% block content %}
+    <h2>Каталог двигателей</h2>
+    <form method="get" class="filter-form">
+        <input type="text" name="q" placeholder="Поиск по модели или поставщику..." value="{{ query|default:'' }}">
+        <select name="engine_type">
+            <option value="">Все типы двигателей</option>
+            {% for type in engine_types %}
+                <option value="{{ type.name }}" {% if selected_engine_type == type.name %}selected{% endif %}>{{ type.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="fuel_type">
+            <option value="">Все типы топлива</option>
+            {% for type in fuel_types %}
+                <option value="{{ type.name }}" {% if selected_fuel_type == type.name %}selected{% endif %}>{{ type.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Фильтровать</button>
+    </form>
+    {% if page_obj %}
+        <ul class="engine-list">
+            {% for engine in page_obj %}
+                <li>
+                    <div class="engine-item">
+                    {% if engine.image %}
+    <img src="{{ engine.image.url }}" alt="{{ engine.model }}" class="engine-image">
+{% else %}
+    <p>Нет изображения</p>
+{% endif %}
+                        <h3>{{ engine.model }} ({{ engine.supplier }})</h3>
+                        <p>Мощность: {{ engine.power_hp }} л.с.</p>
+                        <p>Крутящий момент: {{ engine.torque_nm }} Нм</p>
+                        <p>Объем: {{ engine.displacement_liters|default:"Н/Д" }} л</p>
+                        <p>Цена: {% if engine.inventory.first %}{{ engine.inventory.first.price }} руб.{% else %}Нет в наличии{% endif %}</p>
+                        <form action="{% url 'shop:add_to_cart' %}" method="post" class="add-to-cart">
+                            {% csrf_token %}
+                            <input type="hidden" name="engine_id" value="{{ engine.id }}">
+                            <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                            <button type="submit" {% if not engine.inventory.first %}disabled{% endif %}>Добавить в корзину</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}">Предыдущая</a>
+            {% endif %}
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}">Следующая</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Двигатели не найдены.</p>
+    {% endif %}
+{% endblock %}
