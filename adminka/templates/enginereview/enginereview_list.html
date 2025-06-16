@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Список отзывов о двигателях{% endblock %}
+
+{% block content %}
+    <h2>Список отзывов о двигателях</h2>
+    <a href="{% url 'adminka:enginereview_create' %}" class="btn btn-primary mb-3">Добавить отзыв</a>
+    {% if reviews %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Двигатель</th>
+                    <th>Пользователь</th>
+                    <th>Оценка</th>
+                    <th>Комментарий</th>
+                    <th>Дата создания</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                    <tr>
+                        <td><a href="{% url 'adminka:enginereview_detail' pk=review.pk %}">{{ review.engine }}</a></td>
+                        <td>{{ review.user|default:"—" }}</td>
+                        <td>{{ review.rating }}</td>
+                        <td>{{ review.comment|truncatewords:10|default:"—" }}</td>
+                        <td>{{ review.created_at }}</td>
+                        <td>
+                            <a href="{% url 'adminka:enginereview_update' pk=review.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{% url 'adminka:enginereview_delete' pk=review.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Отзывы отсутствуют.</p>
+    {% endif %}
+{% endblock %}

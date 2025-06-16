@@ -1,17 +1,19 @@
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import JsonResponse
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_protect
+from django.urls import reverse, reverse_lazy
+
 from adminka.models import Engine, EngineType, FuelType
 from cart.models import Cart, CartItem
 from orders.models import Order, OrderItem
-from django.urls import reverse, reverse_lazy
 
 def is_admin_or_manager(user):
     return user.groups.filter(name__in=['Администратор', 'Менеджер']).exists()
@@ -19,7 +21,7 @@ def is_admin_or_manager(user):
 class CustomLoginView(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('shop:engine_list')  # Перенаправление на каталог после входа
+    success_url = reverse_lazy('shop:engine_list')
 
     def form_valid(self, form):
         """Переносим корзину из сессии в модель Cart после авторизации."""
@@ -38,25 +40,35 @@ class CustomLoginView(LoginView):
                 cart_item, created = CartItem.objects.get_or_create(cart=cart, engine=engine)
                 cart_item.quantity += quantity
                 cart_item.save()
-            self.request.session['cart'] = {}  # Очищаем сессию
+            self.request.session['cart'] = {}
 
 def logout_view(request):
     logout(request)
     messages.success(request, 'Вы успешно вышли из системы.')
     return redirect('shop:home')
 
+@csrf_protect
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            client_group = Group.objects.get(name='Клиент')
-            user.groups.add(client_group)
-            messages.success(request, 'Регистрация успешна! Теперь вы можете войти.')
-            return redirect('shop:login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST.get('email', '')
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Имя пользователя уже занято.')
+        else:
+            user = User.objects.create(
+                username=username,
+                email=email,
+                password=make_password(password)
+            )
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                messages.success(request, 'Регистрация успешна! Вы вошли в систему.')
+                return redirect('shop:engine_list')  # Перенаправление на каталог
+            else:
+                messages.error(request, 'Ошибка аутентификации после регистрации.')
+    return render(request, 'register.html')
 
 def engine_list(request):
     engines = Engine.objects.all()
@@ -102,9 +114,11 @@ def add_to_cart(request):
             cart = request.session.get('cart', {})
             cart[str(engine_id)] = cart.get(str(engine_id), 0) + quantity
             request.session['cart'] = cart
-        #TODO передалать
-        return JsonResponse({'success': True, 'message': 'Двигатель добавлен в корзину'})
-    return JsonResponse({'success': False, 'message': 'Неверный запрос'})
+
+        messages.success(request, 'Двигатель добавлен в корзину!')
+        return redirect(request.META.get('HTTP_REFERER', reverse('shop:engine_list')))  # Перенаправление на предыдущую страницу
+
+    return redirect('shop:engine_list')  # Резервное перенаправление для GET-запросов
 
 def cart_view(request):
     cart_items = []
@@ -146,8 +160,10 @@ def update_cart(request):
                 cart.pop(str(engine_id), None)
             request.session['cart'] = cart
 
-        return JsonResponse({'success': True, 'message': 'Корзина обновлена'})
-    return JsonResponse({'success': False, 'message': 'Неверный запрос'})
+        messages.success(request, 'Корзина обновлена!')
+        return redirect('shop:cart')
+
+    return redirect('shop:cart')
 
 def order_create(request):
     if not request.user.is_authenticated:
@@ -159,7 +175,6 @@ def order_create(request):
             messages.error(request, 'Укажите адрес доставки')
             return redirect('shop:cart')
 
-        cart_items = []
         cart = get_object_or_404(Cart, user=request.user)
         cart_items = cart.items.all()
 

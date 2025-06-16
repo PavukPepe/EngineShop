@@ -1,0 +1,216 @@
+@import url(root.css);
+
+body {
+    background-image: url('../source/background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+	background-attachment: fixed;
+    background-position: center;
+  }
+
+#nav{
+	height: 70px;
+}
+
+.searcher {
+	select,
+	input {
+		height: 45px;
+		background-color: var(--button-color);
+		border-radius: 10px;
+		font-family: var(--font-family-ruda);
+		font-weight: 500;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+
+		&::placeholder {
+			font-size: 14px;
+			padding: 12px;
+			font-family: var(--font-family-ruda);
+			font-weight: 600;
+		}
+	}
+}
+
+p{
+	font-family: var(--font-family-ruda);
+}
+
+.button-area {
+	overflow: hidden;
+	border-radius: 10px;
+	text-wrap: nowrap;
+	button {
+		background-color: var(--accent-color);
+		height: 45px;
+		font-family: var(--font-family-ruda);
+		font-weight: 600;
+		font-size: 13px;
+		text-transform: uppercase;
+		color: #fff;
+		&:first-child {
+			border-right: 1px solid black;
+		}
+		&:hover {
+			transition: 0.2s;
+			background-color: #ff3636;
+		}
+	}
+}
+
+.filter {
+	select,
+	input,
+	label {
+		background-color: white;
+		border-radius: 5px;
+		height: 50px;
+		font-family: var(--font-family-ruda);
+		font-weight: 600;
+
+		&::placeholder {
+			font-family: var(--font-family-ruda);
+			font-weight: 600;
+		}
+	}
+	label {
+		display: flex;
+		span {
+			font-family: var(--font-family-ruda);
+			font-weight: 600;
+			color: #ff5959;
+		}
+	}
+}
+
+.drop {
+	border-radius: 5px;
+	height: 50px;
+	background-color: var(--accent-color);
+	color: black;
+	font-family: var(--font-family-ruda);
+	font-weight: 600;
+	color: #fff;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.drop:hover {
+	transition: 0.2s;
+	background-color: #ff5959;
+}
+
+#search-form {
+	background-color: var(--filter-background-color);
+	border-radius: 10px;
+
+}
+
+footer {
+	background-color: #111111;
+	font-family: var(--font-family-ruda);
+	font-weight: 500;
+	font-size: 20px;
+	weight: 100%;
+	line-height: 2rem;
+	color: white;
+}
+
+.card {
+	border-radius: 10px;
+	overflow: hidden;
+	height: 550px;
+	background-color: #f3f3f3;
+	font-family: var(--font-family-ruda);
+	font-weight: 500;
+	h5 {
+		font-weight: 600;
+		font-size: 18px;
+	}
+
+	.list-group-item {
+		background-color: #f3f3f3;
+	}
+	button {
+		height: 35px;
+		font-weight: 600;
+		border-radius: 5px;
+		color: #fff;
+		background-color: var(--accent-color);
+				&:hover {
+			transition: 0.2s;
+			background-color: #ff5959;
+		}
+	}
+
+
+
+	.price-is {
+		font-weight: 600;
+	}
+	.price-to-be {
+		font-weight: 600;
+	}
+	.card-img-top {
+		background-size: cover;
+	}
+	.card-text {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+		height: 3em;
+		line-height: 1.5em;
+	}
+	p {
+		margin: 0;
+	}
+}
+
+header {
+	font-family: var(--font-family-ruda);
+	font-weight: 500;
+	color: #fff;
+	backdrop-filter: blur(15px);
+
+	.nav-link {
+		font-size: 16px;
+		font-weight: 600;
+		color: #fff;
+		&:hover{
+			color: #7b7b7b;
+		}
+	}
+	p {
+		margin: 0;
+		color: #fff;
+	}
+	button {
+		background-color: var(--accent-color);
+		font-weight: 600;
+		color: #fff;
+		font-size: 16px;
+		border-radius: 25px;
+		height: 35px;
+				&:hover {
+			transition: 0.2s;
+			background-color: #ff3636;
+		}
+	}
+
+	.contact-tel {
+		font-size: 16px;
+		font-weight: 600;
+		a{
+			color: white;
+		}
+	}
+	.contact-time {
+		font-size: 14px;
+	}
+}
+
+        .navbar-collapse.collapse.show {
+			background-color: #00000030;
+            backdrop-filter: blur(15px);
+
+        }

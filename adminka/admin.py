@@ -101,18 +101,6 @@ class EngineAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at')
 
-    # def image_preview(self, obj):
-    #     if obj.image:
-    #         return mark_safe(f'<img src="{obj.image.url}" width="100" height="auto" />')
-    #     return 'Нет изображения'
-    # image_preview.short_description = 'Превью'
-    #
-    # def clean_image(self):
-    #     image = self.cleaned_data.get('image')
-    #     if image and image.size > 2 * 1024 * 1024:  # 2MB
-    #         raise ValidationError('Размер файла не должен превышать 2MB.')
-    #     return image
-
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('engine', 'quantity', 'price', 'warehouse_location')

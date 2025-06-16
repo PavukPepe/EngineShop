@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ fuel_type.name }}{% endblock %}
+
+{% block content %}
+    <h2>{{ fuel_type.name }}</h2>
+    <p><strong>Описание:</strong> {{ fuel_type.description|default:"—" }}</p>
+    <div class="mt-3">
+        <a href="{% url 'adminka:fueltype_update' pk=fuel_type.pk %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'adminka:fueltype_delete' pk=fuel_type.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'adminka:fueltype_list' %}" class="btn btn-secondary">Назад к списку</a>
+    </div>
+{% endblock %}

@@ -1,58 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Каталог двигателей{% endblock %}
 {% block content %}
-    <h2>Каталог двигателей</h2>
-    <form method="get" class="filter-form">
-        <input type="text" name="q" placeholder="Поиск по модели или поставщику..." value="{{ query|default:'' }}">
-        <select name="engine_type">
+    <h2 class="mb-4 p-3 custom-card">Каталог двигателей</h2>
+    <form method="get" class="filter-form mb-4 d-flex gap-3">
+        <input type="text" name="q" placeholder="Поиск по модели или поставщику..." value="{{ query|default:'' }}" class="form-control">
+        <select name="engine_type" class="form-select">
             <option value="">Все типы двигателей</option>
             {% for type in engine_types %}
                 <option value="{{ type.name }}" {% if selected_engine_type == type.name %}selected{% endif %}>{{ type.name }}</option>
             {% endfor %}
         </select>
-        <select name="fuel_type">
+        <select name="fuel_type" class="form-select">
             <option value="">Все типы топлива</option>
             {% for type in fuel_types %}
                 <option value="{{ type.name }}" {% if selected_fuel_type == type.name %}selected{% endif %}>{{ type.name }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Фильтровать</button>
+        <button type="submit" class="">Фильтровать</button>
     </form>
     {% if page_obj %}
-        <ul class="engine-list">
+        <div class="row">
             {% for engine in page_obj %}
-                <li>
-                    <div class="engine-item">
-                    {% if engine.image %}
-    <img src="{{ engine.image.url }}" alt="{{ engine.model }}" class="engine-image">
-{% else %}
-    <p>Нет изображения</p>
-{% endif %}
-                        <h3>{{ engine.model }} ({{ engine.supplier }})</h3>
-                        <p>Мощность: {{ engine.power_hp }} л.с.</p>
-                        <p>Крутящий момент: {{ engine.torque_nm }} Нм</p>
-                        <p>Объем: {{ engine.displacement_liters|default:"Н/Д" }} л</p>
-                        <p>Цена: {% if engine.inventory.first %}{{ engine.inventory.first.price }} руб.{% else %}Нет в наличии{% endif %}</p>
-                        <form action="{% url 'shop:add_to_cart' %}" method="post" class="add-to-cart">
-                            {% csrf_token %}
-                            <input type="hidden" name="engine_id" value="{{ engine.id }}">
-                            <input type="number" name="quantity" value="1" min="1" class="quantity-input">
-                            <button type="submit" {% if not engine.inventory.first %}disabled{% endif %}>Добавить в корзину</button>
-                        </form>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="d-flex flex-column engine-card p-3">
+                        <div style="overflow: hidden; height: 250px;">
+                            {% if engine.image %}
+                                <img src="{{ engine.image.url }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ engine.model }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" style="width: 100%; height: 100%; object-fit: cover;" alt="Нет изображения">
+                            {% endif %}
+                        </div>
+                        <div class="">
+                            <h5 class="my-3">{{ engine.model }}</h5>
+                            <p class=" mb-3">{{ engine.supplier.name }}</p>
+                            <div style="height: 50%;">
+                                <ul class="list-group ">
+                                    <li class=" d-flex justify-content-between">
+                                        <p>Объем</p>
+                                        <p>{{ engine.displacement_liters|default:"Н/Д" }} л</p>
+                                    </li>
+                                    <li class=" d-flex justify-content-between">
+                                        <p>Тип топлива</p>
+                                        <p>{{ engine.fuel_type.name|default:"Н/Д" }}</p>
+                                    </li>
+                                    <li class=" d-flex justify-content-between">
+                                        <p>Производитель</p>
+                                        <p>{{ engine.supplier.country.name|default:"Н/Д" }}</p>
+                                    </li>
+                                </ul>
+                                <ul class="list-group">
+                                    <li class=" d-flex justify-content-between">
+                                        <p>В наличии</p>
+                                        <p><span class="price-is">{{ engine.inventory.first.price|default:"Нет в наличии" }} руб.</span></p>
+                                    </li>
+                                    <li class=" d-flex justify-content-between">
+                                        <p>На заказ</p>
+                                        <p><span class="price-to-be">{% if engine.inventory.first.price %}{{ engine.inventory.first.price|floatformat:0}}{% else %}Н/Д{% endif %} руб.</span></p>
+                                    </li>
+                                </ul>
+                                <form action="{% url 'shop:add_to_cart' %}" method="post" class="add-to-cart d-flex gap-2 mt-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="engine_id" value="{{ engine.id }}">
+                                    <input type="number" name="quantity" value="1" min="1" class="quantity-input form-control" style="width: 80px;">
+                                    <button type="submit" class=" flex-grow-1" {% if not engine.inventory.first %}disabled{% endif %}>Добавить в корзину</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </li>
+                </div>
             {% endfor %}
-        </ul>
-        <div class="pagination">
+        </div>
+        <div class="pagination mt-4">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}">Предыдущая</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}" class="btn btn-outline-primary">Предыдущая</a>
             {% endif %}
             <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}">Следующая</a>
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_engine_type %}&engine_type={{ selected_engine_type }}{% endif %}{% if selected_fuel_type %}&fuel_type={{ selected_fuel_type }}{% endif %}" class="btn btn-outline-primary">Следующая</a>
             {% endif %}
         </div>
     {% else %}
-        <p>Двигатели не найдены.</p>
+        <p class="text-muted">Двигатели не найдены.</p>
     {% endif %}
 {% endblock %}

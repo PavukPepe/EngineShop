@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Вход{% endblock %}
 {% block content %}
-    <h2>Вход</h2>
-    <form method="post" class="auth-form">
+    <h2 class="p-3 custom-card">Вход</h2>
+    <form method="post" class="auth-form p-3 custom-card">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Войти</button>
     </form>
-    <p>Нет аккаунта? <a href="{% url 'shop:register' %}">Зарегистрироваться</a></p>
+    <p class="p-3 custom-card mt-2" >Нет аккаунта? <a href="{% url 'shop:register' %}">Зарегистрироваться</a></p>
 {% endblock %}

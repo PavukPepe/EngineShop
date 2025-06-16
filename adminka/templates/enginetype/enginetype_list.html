@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Список типов двигателей{% endblock %}
+
+{% block content %}
+    <h2>Список типов двигателей</h2>
+    <a href="{% url 'adminka:enginetype_create' %}" class="btn btn-primary mb-3">Добавить тип двигателя</a>
+    {% if engine_types %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for engine_type in engine_types %}
+                    <tr>
+                        <td><a href="{% url 'adminka:enginetype_detail' pk=engine_type.pk %}">{{ engine_type.name }}</a></td>
+                        <td>{{ engine_type.description|truncatewords:10|default:"—" }}</td>
+                        <td>
+                            <a href="{% url 'adminka:enginetype_update' pk=engine_type.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{% url 'adminka:enginetype_delete' pk=engine_type.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Типы двигателей отсутствуют.</p>
+    {% endif %}
+{% endblock %}

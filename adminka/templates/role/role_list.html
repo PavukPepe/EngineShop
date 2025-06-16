@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Список ролей{% endblock %}
+
+{% block content %}
+    <h2>Список ролей</h2>
+    <a href="{% url 'adminka:role_create' %}" class="btn btn-primary mb-3">Добавить роль</a>
+    {% if roles %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for role in roles %}
+                    <tr>
+                        <td><a href="{% url 'adminka:role_detail' pk=role.pk %}">{{ role.name }}</a></td>
+                        <td>{{ role.description|truncatewords:10|default:"—" }}</td>
+                        <td>
+                            <a href="{% url 'adminka:role_update' pk=role.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{% url 'adminka:role_delete' pk=role.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Роли отсутствуют.</p>
+    {% endif %}
+{% endblock %}

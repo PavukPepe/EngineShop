@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ engine.model }}{% endblock %}
+
+{% block content %}
+    <h2>{{ engine.model }}</h2>
+    <p><strong>Поставщик:</strong> {{ engine.supplier|default:"—" }}</p>
+    <p><strong>Тип двигателя:</strong> {{ engine.engine_type|default:"—" }}</p>
+    <p><strong>Тип топлива:</strong> {{ engine.fuel_type|default:"—" }}</p>
+    <p><strong>Страна:</strong> {{ engine.country|default:"—" }}</p>
+    <p><strong>Год выпуска:</strong> {{ engine.release_year }}</p>
+    <p><strong>Мощность (л.с.):</strong> {{ engine.power_hp }}</p>
+    <p><strong>Крутящий момент (Нм):</strong> {{ engine.torque_nm }}</p>
+    <p><strong>Объем (литры):</strong> {{ engine.displacement_liters|default:"—" }}</p>
+    <p><strong>Вес (кг):</strong> {{ engine.weight_kg|default:"—" }}</p>
+    {% if engine.image %}
+        <p><strong>Фото:</strong><br><img src="{{ engine.image.url }}" alt="{{ engine.model }}" class="img-fluid" style="max-width: 300px;"></p>
+    {% endif %}
+    <p><strong>Дата создания:</strong> {{ engine.created_at }}</p>
+    <p><strong>Дата обновления:</strong> {{ engine.updated_at }}</p>
+    <div class="mt-3">
+        <a href="{% url 'adminka:engine_update' pk=engine.pk %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'adminka:engine_delete' pk=engine.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'adminka:engine_list' %}" class="btn btn-secondary">Назад к списку</a>
+    </div>
+{% endblock %}

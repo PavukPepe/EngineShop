@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Список двигателей{% endblock %}
+
+{% block content %}
+    <h2>Список двигателей</h2>
+    <a href="{% url 'adminka:engine_create' %}" class="btn btn-primary mb-3">Добавить двигатель</a>
+    <!-- Filters -->
+    <form method="get" class="mb-3">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="supplier" class="form-label">Поставщик</label>
+                <select name="supplier" id="supplier" class="form-select">
+                    <option value="">Все</option>
+                    {% for supplier in suppliers %}
+                        <option value="{{ supplier.pk }}" {% if current_filters.supplier == supplier.pk|stringformat:"s" %}selected{% endif %}>{{ supplier.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="engine_type" class="form-label">Тип двигателя</label>
+                <select name="engine_type" id="engine_type" class="form-select">
+                    <option value="">Все</option>
+                    {% for engine_type in engine_types %}
+                        <option value="{{ engine_type.pk }}" {% if current_filters.engine_type == engine_type.pk|stringformat:"s" %}selected{% endif %}>{{ engine_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="fuel_type" class="form-label">Тип топлива</label>
+                <select name="fuel_type" id="fuel_type" class="form-select">
+                    <option value="">Все</option>
+                    {% for fuel_type in fuel_types %}
+                        <option value="{{ fuel_type.pk }}" {% if current_filters.fuel_type == fuel_type.pk|stringformat:"s" %}selected{% endif %}>{{ fuel_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="country" class="form-label">Страна</label>
+                <select name="country" id="country" class="form-select">
+                    <option value="">Все</option>
+                    {% for country in countries %}
+                        <option value="{{ country.pk }}" {% if current_filters.country == country.pk|stringformat:"s" %}selected{% endif %}>{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="sort_by" class="form-label">Сортировать по</label>
+                <select name="sort_by" id="sort_by" class="form-select">
+                    <option value="model" {% if current_filters.sort_by == "model" %}selected{% endif %}>Модель</option>
+                    <option value="release_year" {% if current_filters.sort_by == "release_year" %}selected{% endif %}>Год выпуска</option>
+                    <option value="power_hp" {% if current_filters.sort_by == "power_hp" %}selected{% endif %}>Мощность</option>
+                    <option value="torque_nm" {% if current_filters.sort_by == "torque_nm" %}selected{% endif %}>Крутящий момент</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="order" class="form-label">Порядок</label>
+                <select name="order" id="order" class="form-select">
+                    <option value="asc" {% if current_filters.order == "asc" %}selected{% endif %}>По возрастанию</option>
+                    <option value="desc" {% if current_filters.order == "desc" %}selected{% endif %}>По убыванию</option>
+                </select>
+            </div>
+            <div class="col-md-3 align-self-end">
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </div>
+        </div>
+    </form>
+    {% if engines %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Модель</th>
+                    <th>Поставщик</th>
+                    <th>Тип двигателя</th>
+                    <th>Тип топлива</th>
+                    <th>Страна</th>
+                    <th>Год выпуска</th>
+                    <th>Мощность (л.с.)</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for engine in engines %}
+                    <tr>
+                        <td><a href="{% url 'adminka:engine_detail' pk=engine.pk %}">{{ engine.model }}</a></td>
+                        <td>{{ engine.supplier|default:"—" }}</td>
+                        <td>{{ engine.engine_type|default:"—" }}</td>
+                        <td>{{ engine.fuel_type|default:"—" }}</td>
+                        <td>{{ engine.country|default:"—" }}</td>
+                        <td>{{ engine.release_year }}</td>
+                        <td>{{ engine.power_hp }}</td>
+                        <td>
+                            <a href="{% url 'adminka:engine_update' pk=engine.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{% url 'adminka:engine_delete' pk=engine.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Двигатели отсутствуют.</p>
+    {% endif %}
+{% endblock %}

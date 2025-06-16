@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Список типов топлива{% endblock %}
+
+{% block content %}
+    <h2>Список типов топлива</h2>
+    <a href="{% url 'adminka:fueltype_create' %}" class="btn btn-primary mb-3">Добавить тип топлива</a>
+    {% if fuel_types %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fuel_type in fuel_types %}
+                    <tr>
+                        <td><a href="{% url 'adminka:fueltype_detail' pk=fuel_type.pk %}">{{ fuel_type.name }}</a></td>
+                        <td>{{ fuel_type.description|truncatewords:10|default:"—" }}</td>
+                        <td>
+                            <a href="{% url 'adminka:fueltype_update' pk=fuel_type.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{% url 'adminka:fueltype_delete' pk=fuel_type.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Типы топлива отсутствуют.</p>
+    {% endif %}
+{% endblock %}

@@ -1,38 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}Корзина{% endblock %}
 {% block content %}
-    <h2>Корзина</h2>
+    <h2 class="p-3 custom-card">Корзина</h2>
     {% if cart_items %}
-        <ul class="cart-list">
+        <ul class="cart-list p-3 custom-card">
             {% for item in cart_items %}
-                <li class="cart-item">
+                <li class="cart-item p-3">
                     <div>
-                        <h3>{{ item.engine.model }} ({{ item.engine.supplier }})</h3>
+                        <p>{{ item.engine.model }} ({{ item.engine.supplier }})</p>
                         <p>Цена за единицу: {{ item.engine.inventory.first.price }} руб.</p>
                         <p>Количество: {{ item.quantity }} шт.</p>
-                        <p>Итого: {{ item.engine.inventory.first.price|floatformat:2 }} руб.</p>
+                        <p>Итого: {{ item.engine.inventory.first.price|floatformat:2}} руб.</p>
                         <form action="{% url 'shop:update_cart' %}" method="post" class="update-cart">
                             {% csrf_token %}
                             <input type="hidden" name="engine_id" value="{{ item.engine.id }}">
-                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="quantity-input">
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="quantity-input white">
                             <button type="submit">Обновить</button>
                         </form>
                     </div>
                 </li>
             {% endfor %}
         </ul>
-        <p class="total-price">Общая сумма: {{ total_price|floatformat:2 }} руб.</p>
+        <p class="total-price p-3 custom-card">Общая сумма: {{ total_price|floatformat:2 }} руб.</p>
         {% if user.is_authenticated %}
-            <form action="{% url 'shop:order_create' %}" method="post" class="order-form">
+            <form action="{% url 'shop:order_create' %}" method="post" class="order-form p-3 custom-card d-flex">
                 {% csrf_token %}
                 <label for="address">Адрес доставки:</label>
                 <textarea id="address" name="address" required class="address-textarea"></textarea>
-                <button type="submit">Оформить заказ</button>
+                <button type="submit" class="p-2">Оформить заказ</button>
             </form>
         {% else %}
-            <p>Чтобы оформить заказ, <a href="{% url 'shop:login' %}?next={% url 'shop:order_create' %}">войдите</a> или <a href="{% url 'shop:register' %}">зарегистрируйтесь</a>.</p>
+            <p class="p-3 custom-card">Чтобы оформить заказ, <a href="{% url 'shop:login' %}?next={% url 'shop:order_create' %}">войдите</a> или <a href="{% url 'shop:register' %}">зарегистрируйтесь</a>.</p>
         {% endif %}
     {% else %}
-        <p>Корзина пуста.</p>
+        <p class="p-3 custom-card">Корзина пуста.</p>
     {% endif %}
 {% endblock %}

@@ -1,25 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Мои заказы{% endblock %}
 {% block content %}
-    <h2>Мои заказы</h2>
+    <h2 class="custom-card p-3">Мои заказы</h2>
     {% if orders %}
-        <ul class="order-list">
+        <ul class="order-list p-0">
             {% for order in orders %}
-                <li class="order-item">
-                    <h3>Заказ #{{ order.id }} от {{ order.created_at|date:"d.m.Y H:i" }} ({{ order.status }})</h3>
+                <li class="order-item custom-card p-3 mb-3">
+                    <h3>Заказ #{{ order.id }} от {{ order.created_at|date:"d.m.Y H:i" }}</h3>
+                    <p>Адрес доставки: {{ order.address }}</p>
+{#                    <p>Итого: {{ total_price|floatformat:2 }} руб.</p>#}
                     <ul class="order-items">
                         {% for item in order.items.all %}
-                            <li>
-                                {{ item.engine.model }} - {{ item.quantity }} шт. ({{ item.price|floatformat:2 }} руб./шт.)
-                            </li>
+                            <li>{{ item.engine.model }} ({{ item.quantity }} шт.) - {{ item.price|floatformat:2 }} руб.</li>
                         {% endfor %}
                     </ul>
-{#                    <p>Общая сумма: {{ order.items.aggregate(total=Sum('price' * 'quantity'))['total']|floatformat:2 }} руб.</p>#}
-                    <p>Адрес доставки: {{ order.address }}</p>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>У вас нет заказов.</p>
+        <p class="p-3 custom-card">У вас нет заказов.</p>
     {% endif %}
 {% endblock %}
