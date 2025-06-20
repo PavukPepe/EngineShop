@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'EngineShop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'P4vuk.mysql.pythonanywhere-services.com',
         'PORT': 5432,
-        'NAME': "EngineShop",
-        'USER': 'postgres',
+        'NAME': "P4vuk$EngineShop",
+        'USER': 'P4vuk',
         'PASSWORD': '20332035',
     }
 }
