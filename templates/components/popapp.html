@@ -1,0 +1,108 @@
+{% load static %}
+
+{#<div#}
+{#        class="modal fade"#}
+{#        id="orderModal"#}
+{#        tabindex="-1"#}
+{#        aria-labelledby="orderModalLabel"#}
+{#        aria-hidden="true"#}
+{#>#}
+{#    <div class="modal-dialog">#}
+{#        <div class="modal-content">#}
+{#            <div class="modal-header">#}
+{#                <h5 class="modal-title" id="orderModalLabel">Заказ</h5>#}
+{#                <button#}
+{#                        type="button"#}
+{#                        class="btn-close"#}
+{#                        data-bs-dilgiss="modal"#}
+{#                        aria-label="Close"#}
+{#                ></button>#}
+{#            </div>#}
+{#            <div class="modal-body">#}
+{#                <form id="orderForm">#}
+{#                    <div class="mb-3">#}
+{#                        <label for="name" class="form-label">Имя</label>#}
+{#                        <input type="text" class="form-control" id="name" name="name"/>#}
+{#                    </div>#}
+{#                    <div class="mb-3">#}
+{#                        <label for="phone" class="form-label">Номер телефона</label>#}
+{#                        <input#}
+{#                                type="text"#}
+{#                                class="form-control"#}
+{#                                id="phone"#}
+{#                                placeholder="+7 999 999 99 99"#}
+{#                                name="phone"#}
+{#                                required#}
+{#                        />#}
+{#                    </div>#}
+{#                    <div class="mb-3">#}
+{#                        <label for="good-name" class="form-label">Деталь</label>#}
+{#                        <input#}
+{#                                type="text"#}
+{#                                class="form-control"#}
+{#                                id="good-name"#}
+{#                                name="engine"#}
+{#                                readonly#}
+{#                        />#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#            <div class="modal-footer">#}
+{#                <button#}
+{#                        type="button"#}
+{#                        class="btn btn-secondary"#}
+{#                        data-bs-dilgiss="modal"#}
+{#                >#}
+{#                    Закрыть#}
+{#                </button>#}
+{#                <button type="button" class="btn btn-primary" id="confirmOrder">#}
+{#                    Подтвердить заказ#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+<div
+        class="modal fade"
+        id="orderModal"
+        tabindex="-1"
+        aria-labelledby="orderModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">Заказ</h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm" method="POST" action="{% url 'index' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Номер телефона</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="+7 999 999 99 99"
+                               required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="good-name" class="form-label">Деталь</label>
+                        <input type="text" class="form-control" id="good-name" name="engine" readonly/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary" id="confirmOrder">Подтвердить заказ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

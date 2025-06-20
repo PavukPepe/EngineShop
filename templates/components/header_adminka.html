@@ -1,0 +1,42 @@
+{% load static %}
+<header class="">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'adminka:home' %}">Админка магазина</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключатель навигации">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:role_list' %}">Роли</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:country_list' %}">Страны</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:supplier_list' %}">Поставщики</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:enginetype_list' %}">Типы двигателей</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:fueltype_list' %}">Типы топлива</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:engine_list' %}">Двигатели</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:inventory_list' %}">Склады</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:enginereview_list' %}">Отзывы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminka:news_list' %}">Новости</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

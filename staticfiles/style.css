@@ -1,0 +1,57 @@
+
+ul.messages {
+    list-style: none;
+    padding: 0;
+}
+
+ul.messages li {
+    background: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #d6e9c6;
+    border-radius: 4px;
+}
+
+ul.messages li.error {
+    background: #f2dede;
+    color: #a94442;
+    border-color: #ebccd1;
+}
+
+.auth-form, .add-to-cart, .update-cart, .order-form {
+    margin: 10px 0;
+}
+
+.auth-form input, .order-form textarea, .quantity-input {
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.add-to-cart button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #337ab7;
+    font-weight: bold;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+
+.pagination span {
+    color: #333;
+}

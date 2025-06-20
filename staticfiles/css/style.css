@@ -1,0 +1,57 @@
+.text-main{
+    font-family: var(--font-family-ruda);
+	font-weight: 500;
+    background-color: #00000050;
+    border-radius: 15px;
+    line-height: 24px;
+	color: #fff;
+	backdrop-filter: blur(15px);
+}
+
+.h1{
+    font-size: 32px;
+}
+
+main{
+    min-height: 100vh;
+}
+
+.custom-card{
+    font-family: var(--font-family-ruda);
+	font-weight: 500;
+	color: #fff;
+	backdrop-filter: blur(30px);
+    border-radius: 10px;
+    border: 1px solid #FFFFFF20;
+}
+
+h2{
+    font-size: 32px;
+}
+
+h5{
+    font-size: 20px;
+}
+
+input{
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    background-color: #FFFFFF30;
+}
+
+button{
+    background-color: #CF0000;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.engine-card{
+        font-family: var(--font-family-ruda);
+	font-weight: 500;
+	color: #fff;
+	backdrop-filter: blur(30px);
+    border-radius: 10px;
+    border: 1px solid #FFFFFF20;
+}

@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Ruda:wght@400..900&display=swap');
+
+:root {
+	--top-nav: #ff9802;
+	--accent-color: #CF0000;
+	--main-nav: #565455;
+	--button-color: #d9d9d990;
+	--filter-background-color: #17171720;
+	--place-holder-color: #7b7b7b;
+
+	--font-family-ruda: 'Ruda', sans-serif;
+}
